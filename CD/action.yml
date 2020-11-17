@@ -39,3 +39,4 @@ runs:
     # Local runner service account needs elevated to 'system'.
     - name: Start site
       run: Start-WebSite '${{ inputs.site }}'
+      shell: pwsh
