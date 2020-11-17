@@ -1,0 +1,49 @@
+inputs:
+  branchOrTag:
+    description: 'Git branch or tag'
+    default: 'No branch or tag provided'
+  buildPath:
+    description: 'Directory for build'
+    default: 'No buildPath provided'
+  pubPath:
+    description: 'Directory for publish'
+    default: 'No pubPath provided'
+  site:
+    description: 'IIS site name'
+    default: 'No site provided'
+  envName:
+    description: 'Environment'
+    default: 'No env provided'
+runs:
+  using: "composite"
+  steps:
+    # Local runner service account needs elevated to 'system'.
+    - name: Shutdown site
+      run: Stop-WebSite '${{ inputs.site }}'
+
+    - name: Publish
+      run: |
+        robocopy '${{ inputs.buildPath }}' '${{ inputs.pubPath }}' /s /mir /xf "Web.config"
+        if( $LASTEXITCODE -ge 8 )
+        {
+            throw ("An error occured while copying. [RoboCopyCode: $($LASTEXITCODE)]")
+        }
+        else
+        {
+            $global:LASTEXITCODE = 0;
+        }
+        exit 0
+
+    # Local runner service account needs elevated to 'system'.
+    - name: Start site
+      run: Start-WebSite '${{ inputs.site }}'
+
+    - name: Microsoft Teams Notification
+      uses: skitionek/notify-microsoft-teams@master
+      if: always()
+      with:
+        webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
+        needs: ${{ toJson(needs) }}
+        job: ${{ toJson(job) }}
+        steps: ${{ toJson(steps) }}
+        overwrite: "{title: `${{ inputs.envName }} Deploy from ${{ inputs.branchOrTag }} @ ${{ github.sha }}`}"

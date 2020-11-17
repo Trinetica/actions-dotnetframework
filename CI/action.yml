@@ -1,0 +1,18 @@
+inputs:
+  solutionName:
+    description: 'Name of .sln file'
+    default: 'No solutionName provided'
+runs:
+  using: "composite"
+  steps:
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1
+
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.0.5
+
+    - name: Restore NuGet pkgs
+      run: nuget restore '${{ inputs.solutionName }}'
+
+    - name: Build
+      run: msbuild '${{ inputs.solutionName }}' /p:Configuration=Release /restore

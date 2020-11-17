@@ -1,0 +1,30 @@
+inputs:
+  branchOrTag:
+    description: 'Git branch or tag'
+    default: 'No branch or tag provided'
+  testPath:
+    description: 'Path to test directory.'
+    default: 'No testPath provided'
+runs:
+  using: "composite"
+  steps:
+    # - name: Get Branch
+    #   uses: nelonoel/branch-name@v1
+
+    - name: Test
+      run: packages\xunit.runner.console.2.4.1\tools\net472\xunit.console '${{ inputs.testPath }}'
+
+    - name: Microsoft Teams Notification
+      uses: skitionek/notify-microsoft-teams@master
+      if: failure()
+      with:
+        webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
+        needs: ${{ toJson(needs) }}
+        job: ${{ toJson(job) }}
+        steps: ${{ toJson(steps) }}
+        overwrite: "{title: `Continuous Testing failure from ${{ inputs.branchOrTag }} @ ${{ github.sha }}`}"
+
+      # if: github.ref == 'refs/heads/master'
+      # if: CONTAINS(tag, "No tag provided")
+        # steps:
+        #  - run: echo "I only run if the branch has release in its name!"
