@@ -5,14 +5,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v2
-
-    - name: Setup MSBuild
-      uses: microsoft/setup-msbuild@v1
-
-    - name: Setup NuGet
-      uses: NuGet/setup-nuget@v1.0.5
-
     - name: Restore NuGet pkgs
       run: nuget restore '${{ inputs.solutionName }}'
 
