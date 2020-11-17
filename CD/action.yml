@@ -39,13 +39,3 @@ runs:
     # Local runner service account needs elevated to 'system'.
     - name: Start site
       run: Start-WebSite '${{ inputs.site }}'
-
-    - name: Microsoft Teams Notification
-      uses: skitionek/notify-microsoft-teams@master
-      if: always()
-      with:
-        webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
-        needs: ${{ toJson(needs) }}
-        job: ${{ toJson(job) }}
-        steps: ${{ toJson(steps) }}
-        overwrite: "{title: `${{ inputs.envName }} Deploy from ${{ inputs.branchOrTag }} @ ${{ github.sha }}`}"
