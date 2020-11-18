@@ -20,7 +20,7 @@ runs:
     # Local runner service account needs elevated to 'system'.
     - name: Shutdown site
       run: Stop-WebSite '${{ inputs.site }}'
-      shell: pwsh
+      shell: powershell
 
     - name: Publish
       run: |
@@ -34,9 +34,9 @@ runs:
             $global:LASTEXITCODE = 0;
         }
         exit 0
-      shell: pwsh
+      shell: powershell
 
     # Local runner service account needs elevated to 'system'.
     - name: Start site
       run: Start-WebSite '${{ inputs.site }}'
-      shell: pwsh
+      shell: powershell

@@ -13,7 +13,7 @@ runs:
 
     - name: Test
       run: packages\xunit.runner.console.2.4.1\tools\net472\xunit.console '${{ inputs.testPath }}'
-      shell: pwsh
+      shell: powershell
       
       # if: github.ref == 'refs/heads/master'
       # if: CONTAINS(tag, "No tag provided")
