@@ -7,7 +7,7 @@ runs:
   steps:
     - name: Restore NuGet pkgs
       run: nuget restore '${{ inputs.solutionName }}'
-      shell: pwsh
+      # shell: pwsh
 
     - name: Build
       run: msbuild '${{ inputs.solutionName }}' /p:Configuration=Release /restore
