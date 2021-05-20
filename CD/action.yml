@@ -14,9 +14,19 @@ inputs:
   envName:
     description: 'Environment'
     default: 'No env provided'
+  archivePath:
+    description: 'Directory for archiving previous deploy.'
+    default: 'No archivePath provided'
+  assemblyFilePath:
+      description: 'The .DLL containing version info.'
+      default: 'No assemblyFilePath provided'
 runs:
   using: "composite"
   steps:
+    - name: Archive
+      run: $v = [Reflection.AssemblyName]::GetAssemblyName('${{ inputs.assemblyFilePath }}').Version; Compress-Archive -Path '${{ inputs.pubPath }}' -CompressionLevel "Fastest" -DestinationPath '${{ inputs.archivePath }}.$v.Zip' -Update
+      shell: powershell
+
     # Local runner service account needs elevated to 'system'.
     - name: Shutdown site
       run: Stop-WebSite '${{ inputs.site }}'
