@@ -19,12 +19,20 @@ inputs:
     default: 'No archivePath provided'
   assemblyFilePath:
       description: 'The .DLL containing version info.'
+<<<<<<< HEAD
       default: 'No assemblyFilePath provided'
+=======
+      default: 'No assemblyFilePath provided'    
+>>>>>>> origin/master
 runs:
   using: "composite"
   steps:
     - name: Archive
+<<<<<<< HEAD
       run: $v = [Reflection.AssemblyName]::GetAssemblyName('${{ inputs.assemblyFilePath }}').Version; Compress-Archive -Path '${{ inputs.pubPath }}' -CompressionLevel "Fastest" -DestinationPath '${{ inputs.archivePath }}.$v.Zip' -Update
+=======
+      run: $v = [Reflection.AssemblyName]::GetAssemblyName('${{ inputs.assemblyFilePath }}').Version; Compress-Archive -Path '${{ inputs.pubPath }}' -CompressionLevel "Fastest" -DestinationPath '${{ inputs.archivePath }}' -Update
+>>>>>>> origin/master
       shell: powershell
 
     # Local runner service account needs elevated to 'system'.
