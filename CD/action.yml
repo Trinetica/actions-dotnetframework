@@ -34,7 +34,7 @@ runs:
 
     - name: Publish
       run: |
-        robocopy '${{ inputs.buildPath }}' '${{ inputs.pubPath }}' /s /mir /xf "Web.config"
+        robocopy '${{ inputs.buildPath }}' '${{ inputs.pubPath }}' /s /mir /xf "Web.config" "appsettings.json"
         if( $LASTEXITCODE -ge 8 )
         {
             throw ("An error occured while copying. [RoboCopyCode: $($LASTEXITCODE)]")
