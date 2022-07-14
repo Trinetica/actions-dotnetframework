@@ -23,9 +23,9 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Archive
-      run: $v = [Reflection.AssemblyName]::GetAssemblyName('${{ inputs.assemblyFilePath }}').Version; Compress-Archive -Path '${{ inputs.pubPath }}' -CompressionLevel "Fastest" -DestinationPath "${{ inputs.archivePath }}.$v.Zip" -Update
-      shell: powershell
+    #- name: Archive
+    #  run: $v = [Reflection.AssemblyName]::GetAssemblyName('${{ inputs.assemblyFilePath }}').Version; Compress-Archive -Path '${{ inputs.pubPath }}' -CompressionLevel "Fastest" -DestinationPath "${{ inputs.archivePath }}.$v.Zip" -Update
+    # shell: powershell
 
     # Local runner service account needs elevated to 'system'.
     - name: Shutdown site
